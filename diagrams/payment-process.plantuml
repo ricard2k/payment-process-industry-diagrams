@@ -1,0 +1,35 @@
+@startuml   
+title Payment Process Diagram
+
+sprite $foo1 {
+  FFFFFFFFFFFFFFF
+  F0123456789ABCF
+  F0123456789ABCF
+  F0123456789ABCF
+  F0123456789ABCF
+  F0123456789ABCF
+  F0123456789ABCF
+  F0123456789ABCF
+  F0123456789ABCF
+  FFFFFFFFFFFFFFF
+}
+
+actor "Cardholder" as Cardholder
+participant "PoS <$foo1>"  as Pos
+participant "Acquirer" as Acquirer
+database "Merchant's account" as MerchantsAccount
+participant "Network/Brand" as Network
+participant "Issuer" as Issuer
+database  "Cardholder's account" as CardholderAccount
+
+Cardholder -> Pos : Presents card
+Pos -> Acquirer : Sends Payment Request
+Acquirer -> Network : Forwards Request
+Network -> Issuer : Forwards Request
+Issuer -> CardholderAccount : Blocks funds
+Issuer -> Network : Sends Authorization Response
+Network -> Acquirer : Forwards Response
+Acquirer -> Pos : Sends payment confirmation
+Pos -> Cardholder : Shows payment confirmation
+
+@enduml
